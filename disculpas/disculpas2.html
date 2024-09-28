@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rectángulo Rojo con Video</title>
+    <style>
+        /* Estilos para el rectángulo con imagen de fondo */
+        .rectangulo {
+            width: 320px;
+            height: 240px;
+            border: 2px solid red;
+            margin: 0 auto; /* Centrar horizontalmente */
+            position: relative;
+            border-radius: 10px; /* Bordes redondeados */
+            overflow: hidden; /* Ocultar lo que sobrepasa el rectángulo */
+            background-image: url('C:/Users/Jhoel~/Desktop/disculpas/fondo/corazon.jpg'); /* Fondo inicial */
+            background-size: cover; /* Ajustar la imagen al tamaño del rectángulo */
+        }
+
+        /* Estilo para el video de fondo */
+        .video-fondo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* Detrás de otros elementos */
+            display: none; /* Ocultar inicialmente */
+        }
+
+        /* Estilo para el video principal */
+        .video-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 5%; /* Ajustado para mover el video más arriba */
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            z-index: 1; /* Por encima del fondo */
+        }
+
+        video {
+            width: 80px; /* Tamaño más reducido del video */
+            height: auto;
+            border: 2px solid white; /* Borde blanco alrededor del video */
+            border-radius: 5px; /* Bordes redondeados para el video */
+        }
+
+        /* Estilos para la carta */
+        .carta {
+            width: 180px; /* Ancho del cuadro de la carta reducido */
+            padding: 5px; /* Padding reducido */
+            border: 1px solid pink; /* Bordes de la carta */
+            background-color: rgba(255, 0, 0, 0.8); /* Fondo rojo semitransparente */
+            text-align: center; /* Alinear texto al centro */
+            border-radius: 10px; /* Bordes redondeados */
+            position: absolute;
+            bottom: 25%; /* Ubicación de la carta más arriba */
+            left: 50%;
+            transform: translate(-50%, 0); /* Centrar la carta horizontalmente */
+            font-size: 12px; /* Tamaño de letra reducido */
+            color: white; /* Color del texto */
+        }
+
+        /* Estilos para el mensaje de disculpa */
+        .disculpa {
+            width: 280px; /* Ancho del cuadro de la disculpa */
+            padding: 10px; /* Espaciado interno */
+            border: 1px solid pink; /* Bordes de la disculpa */
+            background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semitransparente */
+            text-align: center; /* Alinear texto al centro */
+            border-radius: 10px; /* Bordes redondeados */
+            position: absolute;
+            bottom: 25%; /* Ubicación de la disculpa */
+            left: 50%;
+            transform: translate(-50%, 0); /* Centrar la disculpa horizontalmente */
+            font-size: 12px; /* Tamaño de letra reducido */
+            color: black; /* Color del texto */
+            display: none; /* Ocultar inicialmente */
+            z-index: 10; /* Asegurarse de que esté por encima de otros elementos */
+        }
+
+        /* Estilos para los botones */
+        .botones {
+            display: flex;
+            justify-content: space-between; /* Espacio entre los botones */
+            position: absolute;
+            bottom: 5%; /* Posición de los botones */
+            width: 90%; /* Ancho total para los botones */
+            left: 50%;
+            transform: translate(-50%, 0); /* Centrar los botones horizontalmente */
+        }
+
+        .boton {
+            padding: 5px 10px; /* Espaciado interno de los botones reducido */
+            border: none;
+            border-radius: 15px; /* Bordes redondeados para simular nubes */
+            cursor: pointer;
+            font-size: 12px; /* Tamaño de letra igual que el texto de la carta */
+            transition: background-color 0.3s; /* Transición suave para el fondo */
+            width: 120px; /* Ancho fijo para los botones */
+            background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semitransparente */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra para dar efecto de nube */
+            color: black; /* Color del texto */
+            text-align: center; /* Centrar texto dentro del botón */
+        }
+
+        .boton-sii {
+            background-color: rgba(0, 255, 0, 0.7); /* Color de fondo verde */
+        }
+
+        .boton-no {
+            background-color: rgba(255, 0, 0, 0.7); /* Color de fondo rojo */
+        }
+
+        .boton:hover {
+            opacity: 0.8; /* Efecto de hover */
+        }
+
+        @keyframes desintegrar {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: scale(5);
+                filter: blur(5px);
+            }
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            position: relative;
+            overflow: hidden; /* Para ocultar la parte de la página en desintegración */
+        }
+
+        .desintegrar {
+            animation: desintegrar 1s forwards; /* Animación para la desintegración */
+        }
+    </style>
+</head>
+<body>
+    <!-- Rectángulo con imagen de fondo -->
+    <div class="rectangulo">
+        <!-- Video de fondo que se mostrará al hacer clic en "Sí, te perdono" -->
+        <video class="video-fondo" id="videoFondo" autoplay loop muted>
+            <source src="C:/Users/Jhoel~/Desktop/disculpas/fondo/corazon2.mp4" type="video/mp4">
+            Tu navegador no soporta el formato de video.
+        </video>
+
+        <!-- Contenedor para el video principal -->
+        <div class="video-container">
+            <video id="video" autoplay loop muted>
+                <source src="C:/Users/Jhoel~/Desktop/disculpas/osito/lloroso.mp4" type="video/mp4">
+                Tu navegador no soporta el formato de video.
+            </video>
+        </div>
+
+        <!-- Cuadro para el mensaje -->
+        <div class="carta">
+            <p id="mensajeCarta">'Lamento mucho cualquier inconveniente que haya causado y espero que podamos resolver esto.'</p>
+        </div>
+
+        <!-- Mensaje de disculpa -->
+        <div class="disculpa" id="mensajeDisculpa">
+            <p>Yeimy, quiero disculparme de todo corazón. Reconozco que cometí un error y entiendo cómo te afectó. No fue mi intención herirte, y lamento sinceramente cualquier dolor que te haya causado. Valoro mucho nuestra amistad y me gustaría poder hablar sobre esto para que podamos resolverlo. Espero que puedas perdonarme y darme la oportunidad de enmendarlo.</p>
+        </div>
+
+        <!-- Botones para opciones -->
+        <div class="botones" id="botones">
+            <button class="boton boton-sii" onclick="handleForgive()">Sí, te perdono</button>
+            <button class="boton boton-no" onclick="handleNo()">No, no te perdono</button>
+        </div>
+
+    </div>
+
+    <script>
+        function handleNo() {
+            const mensajeDisculpa = document.getElementById('mensajeDisculpa');
+            mensajeDisculpa.style.display = 'block'; // Mostrar el mensaje de disculpa
+            document.getElementById('botones').style.display = 'none'; // Ocultar botones
+
+            // Esperar 10 segundos antes de desintegrar la página
+            setTimeout(() => {
+                document.body.classList.add('desintegrar'); // Agregar la clase para desintegrar
+            }, 10000); // 10 segundos
+        }
+
+        function handleForgive() {
+            const mensajeCarta = document.getElementById('mensajeCarta');
+            mensajeCarta.innerHTML = "Yeimy, estoy feliz de que puedas darme otra oportunidad. Quiero que sepas que valoro nuestra amistad :3 ."; // Cambiar el mensaje
+            
+            // Mostrar el video de fondo
+            const videoFondo = document.getElementById('videoFondo');
+            videoFondo.style.display = 'block'; // Mostrar el video de fondo
+            
+            // Cambiar el video principal
+            const video = document.getElementById('video');
+            video.src = "C:/Users/Jhoel~/Desktop/disculpas/osito/feliz.mp4"; // Cambiar la fuente del video
+            video.load(); // Cargar el nuevo video
+
+            // Ocultar botones
+            document.getElementById('botones').style.display = 'none';
+
+            // Cambiar a osofeliz2.mp4 después de 2 segundos
+            setTimeout(() => {
+                video.src = "C:/Users/Jhoel~/Desktop/disculpas/osito/osofeliz2.mp4"; // Cambiar la fuente del video a osofeliz2.mp4
+                video.load(); // Cargar el nuevo video
+                video.play(); // Reproducir el nuevo video
+            }, 2000); // 2 segundos
+        }
+    </script>
+</body>
+</html>
+
